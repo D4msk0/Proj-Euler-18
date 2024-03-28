@@ -10,14 +10,14 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        String fileName = "large_pyramid.txt";
+        String fileName = "giant_pyramid.txt";
 
         List<int[]> pyramid = turnFiletoList(fileName);
         int[][] matrix = convertArrayListToMatrix(pyramid);
 
-        System.out.println();
-        System.out.println("\nOriginal Matrix");
-        printMatrix(matrix);
+        // System.out.println();
+        // System.out.println("\nOriginal Matrix");
+        // printMatrix(matrix);
 
         int[][] matrixNew = deepCopyMatrix(matrix);
 
@@ -42,11 +42,14 @@ public class Main {
             }
         }
 
-        System.out.println();
-        System.out.println("\nNew Matrix");
+        // System.out.println();
+        // System.out.println("\nNew Matrix");
+        // printMatrix(matrixNew);
 
-        printMatrix(matrixNew);
+        findHighestValue(matrixNew);
+    }
 
+    private static void findHighestValue(int[][] matrixNew){
         int highestValue = 0;
         //Find largest value in last row.
         for (int i = 0; i < matrixNew.length; i++) {
@@ -54,7 +57,7 @@ public class Main {
                 highestValue = matrixNew[matrixNew.length - 1][i];
             }
         }
-        System.out.println("Highest value is: " + highestValue);
+        System.out.println("\nHighest value is: " + highestValue);
     }
 
     private static int[][] deepCopyMatrix(int[][] existingMatrix) {
