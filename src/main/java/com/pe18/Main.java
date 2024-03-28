@@ -15,7 +15,8 @@ public class Main {
         List<int[]> pyramid = turnFiletoList(fileName);
         int[][] matrix = convertArrayListToMatrix(pyramid);
 
-        // printList(pyramid);
+        System.out.println();
+        System.out.println("\nOriginal Matrix");
         printMatrix(matrix);
 
         int[][] matrixNew = deepCopyMatrix(matrix);
@@ -45,6 +46,15 @@ public class Main {
         System.out.println("\nNew Matrix");
 
         printMatrix(matrixNew);
+
+        int highestValue = 0;
+        //Find largest value in last row.
+        for (int i = 0; i < matrixNew.length; i++) {
+            if(matrixNew[matrixNew.length - 1][i] > highestValue){
+                highestValue = matrixNew[matrixNew.length - 1][i];
+            }
+        }
+        System.out.println("Highest value is: " + highestValue);
     }
 
     private static int[][] deepCopyMatrix(int[][] existingMatrix) {
