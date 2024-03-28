@@ -4,20 +4,115 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
-        String fileName = "small_pyramid.txt";
+        String fileName = "large_pyramid.txt";
+
+        List<int[]> pyramid = turnFiletoList(fileName);
+        int[][] matrix = convertArrayListToMatrix(pyramid);
+
+        // printList(pyramid);
+        printMatrix(matrix);
+
+        int[][] matrixNew = deepCopyMatrix(matrix);
+
+        int number = 0;
+        int nextNumber = 0;
+
+        for (int i = 0; i < matrix.length - 1; i++) {
+            for (int j = 0; j < matrix[i].length - 1; j++) {
+
+                number = matrixNew[i][j];
+                nextNumber = matrixNew[i][j + 1];
+
+                if (j == 0) {
+                    matrixNew[i + 1][j] += number;
+                }
+                
+                if (number > nextNumber) {
+                    matrixNew[i + 1][j + 1] += number;
+                } else {
+                    matrixNew[i + 1][j + 1] += nextNumber;
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.println("\nNew Matrix");
+
+        printMatrix(matrixNew);
+    }
+
+    private static int[][] deepCopyMatrix(int[][] existingMatrix) {
+        int numRows = existingMatrix.length;
+        int[][] newMatrix = new int[numRows][];
+
+        for (int i = 0; i < numRows; i++) {
+            newMatrix[i] = existingMatrix[i].clone();
+        }
+
+        return newMatrix;
+    }
+
+    private static void printMatrix(int[][] matrix) {
+        System.out.println();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private static int[][] convertArrayListToMatrix(List<int[]> arrayList) {
+        int numRows = arrayList.size();
+        int numCols = arrayList.get(numRows - 1).length;
+
+        int[][] matrix = new int[numRows][numCols];
+
+        for (int i = 0; i < numRows; i++) {
+            int[] row = arrayList.get(i);
+            for (int j = 0; j < numCols; j++) {
+                if (j < row.length) {
+                    matrix[i][j] = row[j];
+                }
+            }
+        }
+
+        return matrix;
+    }
+
+    private static void printList(List<int[]> list) {
+        System.out.println("Pyramid stored in List<int[]>");
+
+        for (int[] row : list) {
+
+            for (int num : row) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static List<int[]> turnFiletoList(String fileName) {
+        List<int[]> arrayList = new ArrayList<>();
         InputStream inputStream = ClassLoader.getSystemResourceAsStream(fileName);
 
         if (inputStream != null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
+                    String[] numbers = line.trim().split("\\s+");
+                    int[] row = new int[numbers.length];
+                    for (int i = 0; i < numbers.length; i++) {
+                        row[i] = Integer.parseInt(numbers[i]);
+                    }
+                    arrayList.add(row);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -25,49 +120,6 @@ public class Main {
         } else {
             System.err.println("File not found: " + fileName);
         }
+        return arrayList;
     }
 }
-
-// try {
-// List<int[]> arrays = readNumbersFromFile(filename);
-
-// // Print the arrays
-// for (int i = 0; i < arrays.size(); i++) {
-// System.out.println("Array " + (i + 1) + ": " +
-// java.util.Arrays.toString(arrays.get(i)));
-// }
-// } catch (IOException e) {
-// System.err.println("Error reading this file: " + e.getMessage());
-// }
-
-// System.out.println("Program finished!");
-// }
-
-// private static List<int[]> readNumbersFromFile(String filename) throws
-// IOException {
-
-// // Creates a list of arrays
-// List<int[]> arrayList = new ArrayList<>();
-
-// try {
-// // Creates a FileReader
-// FileReader file = new FileReader(filename);
-
-// // Creates a BufferedReader
-// BufferedReader buffer = new BufferedReader(file);
-
-// String line;
-// while ((line = buffer.readLine()) != null) {
-// System.out.println(line);
-
-// }
-
-// buffer.close();
-// }
-
-// catch (Exception e) {
-// e.getStackTrace();
-// }
-
-// return arrayList;
-// }
